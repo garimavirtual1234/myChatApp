@@ -1,9 +1,11 @@
-import 'package:chat_bot_demo/home_screen.dart';
-import 'package:chat_bot_demo/login_screen.dart';
+
+import 'package:chat_bot_demo/module/auth/view/login_screen.dart';
+import 'package:chat_bot_demo/routes/route_class.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import 'chat_screen.dart';
+
 
 
 
@@ -19,10 +21,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  GetMaterialApp(
       title: 'ChatGPT APP',
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: const LoginScreen(),
+      getPages: AppRoute.routes,
     );
   }
 }

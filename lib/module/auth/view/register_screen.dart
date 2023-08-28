@@ -1,40 +1,56 @@
-import 'package:chat_bot_demo/register_screen.dart';
+
+import 'package:chat_bot_demo/module/auth/controller/register_controller.dart';
 import 'package:flutter/material.dart';
-
-import 'firebase_services.dart';
-import 'home_screen.dart';
+import 'package:get/get.dart';
 
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+import '../../../services/firebase_services.dart';
+import '../../dashboard/view/home_screen.dart';
+import 'login_screen.dart';
+
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-
-  final formKey = GlobalKey<FormState>();
-  final TextEditingController _email= TextEditingController();
-  final TextEditingController _password= TextEditingController();
+class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
+    return GetBuilder(
+      init: RegisterController(),
+        builder: (controller){
+      return Scaffold(
+        body: Container(
           padding: const EdgeInsets.all(15),
           child: Form(
-            key: formKey,
+            key: controller.registerFormKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
                 Padding(
-                  padding: const EdgeInsets.only(top:200,bottom: 20),
+                  padding: const EdgeInsets.only(bottom: 20),
                   child: TextFormField(
-                      controller: _email,
+                    controller: controller.name,
+                    decoration: const InputDecoration(
+                      focusColor: Colors.yellow,
+                      border: OutlineInputBorder(),
+                      hintText: "Enter Your Name",
+                    ),
+                    validator: (String? value){
+                      if(value!.isEmpty){
+                        return "Enter your name";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top:10,bottom: 20),
+                  child: TextFormField(
+                      controller: controller.email,
                       decoration: const InputDecoration(
                         focusColor: Colors.yellow,
                         border: OutlineInputBorder(),
@@ -54,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top:10,bottom: 20),
                   child: TextFormField(
-                    controller: _password,
+                    controller: controller.password,
                     obscureText: true,
                     decoration: const InputDecoration(
                       focusColor: Colors.yellow,
@@ -71,21 +87,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
 
                 ElevatedButton(onPressed: (){
-                  if(formKey.currentState!.validate()){
-                    FirebaseServices().userAuthentication().then((value) {
-                      if(value==null){
-                        ScaffoldMessenger.of(context).
-                        showSnackBar(
-                            const SnackBar(content:
-                            Text("Invalid User")));
-                      }else{
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context)=>const MyHomePage()));
-                      }
-                    });
+                  if(controller.registerFormKey.currentState!.validate()){
+
                   }
                 }, child:
-                const Text("Login"),
+                const Text("Create Account"),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
@@ -93,12 +99,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children:  [
-                        const Text("If you not have account then create one.."),
+                        const Text("If you have account then"),
                         GestureDetector(
                           onTap: (){
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (context)=> const RegisterScreen())
-                            );
+                            Get.offAll(const LoginScreen());
                           },
                           child: const Text("CLICK HERE",
                             style: TextStyle(
@@ -115,7 +119,9 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
+
+
