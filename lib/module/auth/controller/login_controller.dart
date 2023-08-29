@@ -13,10 +13,12 @@ class LoginController extends GetxController{
   FirebaseServices services = FirebaseServices();
 
   login() {
-   services.userAuthentication(email.text,password.text).then((value) {
+   services.userAuthentication(email.text,password.text)
+       .then((value) {
      print(value);
       if(value==null){
-        Get.snackbar("Fail", "Invalid User");
+     //   Get.snackbar("Fail", "Invalid User");
+        print("Invalid");
       }else{
         Get.offAll(()=>const MyHomePage());
       }
@@ -25,7 +27,6 @@ class LoginController extends GetxController{
   }
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     email= TextEditingController();
     password = TextEditingController();
@@ -33,7 +34,7 @@ class LoginController extends GetxController{
 
   @override
   void dispose() {
-    // TODO: implement dispose
+
     super.dispose();
     email.dispose();
     password.dispose();

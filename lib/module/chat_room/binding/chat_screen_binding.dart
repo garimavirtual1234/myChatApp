@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 class ChatScreenBinding extends Bindings{
   @override
   void dependencies() {
-    // TODO: implement dependencies
+
     Get.lazyPut(() => ChatMessageController());
   }
 

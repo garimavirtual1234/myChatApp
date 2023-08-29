@@ -10,8 +10,10 @@ import '../model/user.dart';
 
 class HomePageController extends GetxController{
 FirebaseServices services = FirebaseServices();
-
 UserModel? user;
+
+
+
 
 
 
@@ -26,8 +28,9 @@ Future<QuerySnapshot<Map<String, dynamic>>> readUsers() =>
 
 @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
+
+    readUsers();
 
   }
 

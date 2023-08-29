@@ -40,7 +40,7 @@ class MyHomePage extends StatelessWidget {
                             elevation: 5,
                             child: ListTile(
                               onTap: (){
-                                print("${snapshot.data!.docs[index]}");
+                                //print("${snapshot.data!.docs[index]}");
                                 Get.to(()=>const ChatScreen(),arguments: ["${products["id"]}"]);
                               },
                               leading: const CircleAvatar(
@@ -58,7 +58,7 @@ class MyHomePage extends StatelessWidget {
                         },
                       );
                     }else{
-                      return const Text("no data present");
+                      return const Center(child: Text("no data present"));
                     }
                   }
               ));

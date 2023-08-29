@@ -1,15 +1,16 @@
 import 'package:chat_bot_demo/module/chat_room/controller/chat_messages_controller.dart';
 import 'package:chat_bot_demo/module/chat_room/model/message_model.dart';
 import 'package:chat_bot_demo/services/firebase_services.dart';
-import 'package:chat_bot_demo/module/dashboard/model/user.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:intl/intl.dart';
 
-import '../../../widget/common_widget.dart';
+
+import '../../../widget/message_bubble.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({
@@ -102,35 +103,36 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       chatMessages.type == "text"
-                          ? messageBubble(
+                          ? MessageBubble(
                               chatContent: chatMessages.content,
-                              color: Colors.green,
-                              textColor: Colors.white,
+                              color: Colors.blue,
+                              textColor: Colors.white, timestamp:chatMessages.timestamp ,
                             )
                           : chatMessages.type == "image"
                               ? Container(
+                        width: MediaQuery.of(context).size.width*0.7,
+                                  height: 200,
                                   margin:
-                                      const EdgeInsets.only(right: 10, top: 10),
-                                  child: Image.network(chatMessages.content))
+                                      const EdgeInsets.only(right: 10, top: 10,bottom: 20),
+                                  child: Image.network(chatMessages.content,
+                                  fit: BoxFit.fitWidth,
+                                  ))
                               : const SizedBox.shrink(),
-                      controller.isMessageSent(index)
-                          ? Container(
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: const Icon(Icons.person))
-                          : Container(
-                              width: 35,
-                            ),
-                      controller.isMessageSent(index)
-                          ? Container(
-                              margin: const EdgeInsets.all(10),
-                              child: Text(chatMessages.timestamp,
-                                  style: const TextStyle(color: Colors.grey)),
-                            )
-                          : const SizedBox.shrink()
+                      // controller.isMessageSent(index)
+                      //     ? Container(
+                      //         clipBehavior: Clip.hardEdge,
+                      //         decoration: BoxDecoration(
+                      //             borderRadius: BorderRadius.circular(20)),
+                      //         child: const Icon(Icons.person))
+                      //     : Container(
+                      //         width: 35,
+                      //       ),
+                      // controller.isMessageSent(index)
+                      //     ? Icon(Icons.ti)
+                      //     : const SizedBox.shrink()
                     ],
                   )
                 ],
@@ -140,37 +142,42 @@ class _ChatScreenState extends State<ChatScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      controller.isMessageReceived(index)
-                          ? Container(
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: const Icon(Icons.person_2),
-                            )
-                          : Container(
-                              width: 35,
-                            ),
+                      // controller.isMessageReceived(index)
+                      //     ? Container(
+                      //         clipBehavior: Clip.hardEdge,
+                      //         decoration: BoxDecoration(
+                      //             borderRadius: BorderRadius.circular(10)),
+                      //         child: const Icon(Icons.person_2_outlined),
+                      //       )
+                      //     : Container(
+                      //         width: 35,
+                      //       ),
                       chatMessages.type == "text"
-                          ? messageBubble(
-                              color: Colors.blue,
+                          ? MessageBubble(
+                              color: Colors.grey,
                               chatContent: chatMessages.content,
-                              textColor: Colors.white,
+                              textColor: Colors.black, timestamp: chatMessages.timestamp,
                             )
                           : chatMessages.type == "image"
                               ? Container(
-                                  margin:
-                                      const EdgeInsets.only(left: 10, top: 10),
-                                  child: Image.network(chatMessages.content))
+                          width: MediaQuery.of(context).size.width*0.7,
+                          height: 200,
+                          margin:
+                          const EdgeInsets.only(right: 10, top: 10,bottom: 20),
+                          child: Image.network(chatMessages.content,
+                            fit: BoxFit.fitWidth,
+                          ))
                               : const SizedBox.shrink(),
                     ],
                   ),
-                  controller.isMessageReceived(index)
-                      ? Container(
-                          margin: const EdgeInsets.all(10),
-                          child: Text(chatMessages.timestamp),
-                        )
-                      : const SizedBox.shrink()
+                  // controller.isMessageReceived(index)
+                  //     ? Container(
+                  //         margin: const EdgeInsets.all(10),
+                  //         child: Text(chatMessages.timestamp),
+                  //       )
+                     // : const SizedBox.shrink()
                 ],
               );
             }
@@ -181,22 +188,32 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget buildListMessage() {
+
     return GetBuilder(
       init: ChatMessageController(),
       builder: (controller) {
+        if (FirebaseAuth.instance.currentUser!.uid.hashCode <= controller.args[0].hashCode) {
+          print("hascode-${FirebaseAuth.instance.currentUser!.uid.hashCode}");
+          controller.groupChatId = '${FirebaseAuth.instance.currentUser!.uid}-${controller.args[0]}';
+        } else {
+          print("hascode-${FirebaseAuth.instance.currentUser!.uid.hashCode}");
+          controller.groupChatId = '${controller.args[0]}-${FirebaseAuth.instance.currentUser!.uid}';
+        }
         return Expanded(
-            child: FirebaseFirestore.instance
-                    .collection('chats')
-                    .doc(controller.currentUser)
-                    .collection("messages")
-                    .id
-                    .isNotEmpty
-                ?
+            child:
+           // controller.groupChatId != null?
+            // FirebaseFirestore.instance
+            //         .collection('chats')
+            //         .doc(controller.currentUser)
+            //         .collection("messages")
+            //         .id
+            //         .isNotEmpty
+            //     ?
                 // FirebaseFirestore.instance.collection('messages').
                 // doc("groupChatId")
                 //     .id.isNotEmpty?
                 StreamBuilder<QuerySnapshot>(
-                    stream: controller.getMessages(),
+                    stream: FirebaseServices().getChatMessage(controller.groupChatId!, 10),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasData) {
@@ -212,12 +229,16 @@ class _ChatScreenState extends State<ChatScreen> {
                           return const Center(child: Text("No Messages..."));
                         }
                       } else {
-                        return const Center(child: Text("Start "));
+                         return const Center(
+                             child: SizedBox(
+                                 height: 20,
+                                 width: 20,
+                                 child: CircularProgressIndicator()));
                       }
-                    })
-                : const Center(
-                    child: CircularProgressIndicator(),
-                  ));
+                    }));
+                // : const Center(
+                //     child: Text("Start messages"),
+                //   ));
       },
     );
   }

@@ -18,10 +18,11 @@ class ChatMessageController extends GetxController{
  String? imageUrl;
   var args= Get.arguments;
 String currentUser = FirebaseAuth.instance.currentUser!.uid;
+String? groupChatId;
 
   @override
   void onInit() {
-    // TODO: implement onInit
+
     super.onInit();
     textController=TextEditingController();
 
@@ -29,7 +30,7 @@ String currentUser = FirebaseAuth.instance.currentUser!.uid;
 
   //checking if sent message
   bool isMessageSent(int index){
-    print("ppp"+listMessages[index]);
+ //   print("ppp"+listMessages[index] as DocumentSnapshot);
     if((index > 0 && listMessages[index-1].get('idFrom') != FirebaseAuth.instance.currentUser!.uid)|| index == 0){
       return true;
     }else{
@@ -39,7 +40,7 @@ String currentUser = FirebaseAuth.instance.currentUser!.uid;
 
   //checking if received message
 bool isMessageReceived(int index){
-    print(listMessages[index]);
+   // print(listMessages[index]);
     if((index>0 && listMessages[index-1].get('idFrom') == FirebaseAuth.instance.currentUser!.uid) || index == 0){
       return true;
     }
@@ -49,10 +50,17 @@ bool isMessageReceived(int index){
 }
 
 void onSendMessage(String content,String type){
+  if (FirebaseAuth.instance.currentUser!.uid.hashCode <= args[0].hashCode) {
+    groupChatId = '${FirebaseAuth.instance.currentUser!.uid}-${args[0]}';
+  } else {
+    groupChatId = '${args[0]}-${FirebaseAuth.instance.currentUser!.uid}';
+  }
+  // groupChatId= "${FirebaseAuth.instance.currentUser!.uid}-${args[0]}";
     if(content.trim().isNotEmpty){
       textController.clear();
       services.sendChatMessage(
          content, type,
+        groupChatId!,
         //  FirebaseFirestore.instance.collection('chats').
           // doc(FirebaseAuth.instance.currentUser!.uid).collection("messages").id,
            FirebaseAuth.instance.currentUser!.uid.toString(),
@@ -80,10 +88,17 @@ Future getImage() async{
 }
 
 getMessages() {
-   services.getChatMessage(10);
+  if (FirebaseAuth.instance.currentUser!.uid.hashCode <= args[0].hashCode) {
+    groupChatId = '${FirebaseAuth.instance.currentUser!.uid}-${args[0]}';
+  } else {
+    groupChatId = '${args[0]}-${FirebaseAuth.instance.currentUser!.uid}';
+  }
+   services.getChatMessage(groupChatId!,10);
 }
 
 void uploadImageFile() async{
+    // ignore: prefer_interpolation_to_compose_strings
+
     String fileName = DateTime.now().millisecondsSinceEpoch.toString();
     var uploadTask = services.uploadImageFile(imageFile!, fileName);
     try{
@@ -100,7 +115,7 @@ void uploadImageFile() async{
 }
 @override
   void dispose() {
-    // TODO: implement dispose
+
     super.dispose();
     textController.dispose();
   }

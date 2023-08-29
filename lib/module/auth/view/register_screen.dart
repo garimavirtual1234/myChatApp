@@ -88,7 +88,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 ElevatedButton(onPressed: (){
                   if(controller.registerFormKey.currentState!.validate()){
-
+                    controller.register();
                   }
                 }, child:
                 const Text("Create Account"),

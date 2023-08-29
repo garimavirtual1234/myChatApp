@@ -22,7 +22,7 @@ class RegisterController extends GetxController{
 
   @override
   void onInit() {
-    // TODO: implement onInit
+
     super.onInit();
     name= TextEditingController();
     email = TextEditingController();
@@ -31,7 +31,7 @@ class RegisterController extends GetxController{
 
   @override
   void dispose() {
-    // TODO: implement dispose
+
     super.dispose();
     name.dispose();
     email.dispose();

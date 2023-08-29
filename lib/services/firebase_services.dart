@@ -1,5 +1,4 @@
 
-//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 import 'dart:io';
 
@@ -9,9 +8,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
 
 import '../module/dashboard/model/user.dart';
 
@@ -26,7 +25,10 @@ class FirebaseServices {
         print("invalid");
         return null;
       }
-    } catch (e) {
+    } on FirebaseAuthException catch (e){
+      Get.snackbar("Fail", "${e.message}");
+    }
+    catch (e) {
       throw Exception(e);
     }
   }
@@ -49,7 +51,6 @@ class FirebaseServices {
         }
         );
       }
-
       return user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
@@ -90,15 +91,11 @@ Future<void> updateFirestoreData(
 
 
 //get Stream of Chat Messages while user chat with each other
-  Stream<QuerySnapshot> getChatMessage( int limit){
+  Stream<QuerySnapshot> getChatMessage(String groupChatId, int limit){
+    print("getMessage-$groupChatId");
    var currentUserId = FirebaseAuth.instance.currentUser!.uid;
    print(currentUserId);
-   var messages=FirebaseFirestore.instance.
-   collection('chats').doc(currentUserId).
-   collection("messages").
-   orderBy('timestamp',descending: true)
-       .limit(limit).snapshots();
-   print("messges-${messages.length}");
+   var messages = FirebaseFirestore.instance.collection('chats').doc(groupChatId).collection("messages").orderBy('timestamp',descending: true).limit(limit).snapshots();
    return messages;
   }
 
@@ -107,18 +104,20 @@ Future<void> updateFirestoreData(
   void sendChatMessage(
       String content,
      String type,
+      String groupChatId,
       String currentUserId,
       String peerId){
     var currentUserId= FirebaseAuth.instance.currentUser!.uid;
+    print("sendMessage-$groupChatId");
     print("ccc-$currentUserId");
    DocumentReference documentReference =
   // FirebaseFirestore.instance.collection('messages').
  //  doc("groupChatId").collection("groupChatId").doc(DateTime.now().millisecondsSinceEpoch.toString());
-   FirebaseFirestore.instance.collection("chats").doc(FirebaseAuth.instance.currentUser!.uid).collection("messages").doc();
+   FirebaseFirestore.instance.collection("chats").doc(groupChatId).collection("messages").doc();
    ChatMessages chatMessages = ChatMessages(
        idFrom: FirebaseAuth.instance.currentUser!.uid,
        idTo: peerId,
-       timestamp: DateTime.now().toString(),
+       timestamp: DateTime.now().millisecondsSinceEpoch.toString(),
        content: content,
        type: type);
 
