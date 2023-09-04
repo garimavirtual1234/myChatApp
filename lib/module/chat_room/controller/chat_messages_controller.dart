@@ -1,11 +1,15 @@
 
 import 'dart:io';
 
+import 'package:chat_bot_demo/main.dart';
 import 'package:chat_bot_demo/services/firebase_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -19,6 +23,7 @@ class ChatMessageController extends GetxController{
   var args= Get.arguments;
 String currentUser = FirebaseAuth.instance.currentUser!.uid;
 String? groupChatId;
+  String? name;
 
   @override
   void onInit() {
@@ -66,16 +71,32 @@ void onSendMessage(String content,String type){
            FirebaseAuth.instance.currentUser!.uid.toString(),
          args[0]
       );
+      //showNotification(content);
     }else{
       Get.snackbar("Alert!", "Nothing to send");
     }
     update();
 }
 
-Future getImage() async{
+selectImageSource(){
+  Get.defaultDialog(
+      title: "Select Image From",
+      middleText: "",
+      cancel: ElevatedButton(onPressed: (){
+        getImage(ImageSource.camera);
+      }, child: const Text("Camera")),
+      confirm:  ElevatedButton(onPressed: (){
+        getImage(ImageSource.gallery);
+        Get.back();
+      }, child: const Text("Gallery"))
+
+  );
+}
+
+Future getImage(ImageSource source) async{
     ImagePicker imagePicker = ImagePicker();
 
-  var pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+  var pickedFile = await imagePicker.pickImage(source:source );
   if(pickedFile != null){
     imageFile = File(pickedFile.path);
   }
@@ -93,7 +114,7 @@ getMessages() {
   } else {
     groupChatId = '${args[0]}-${FirebaseAuth.instance.currentUser!.uid}';
   }
-   services.getChatMessage(groupChatId!,10);
+   services.getChatMessage(groupChatId!,100);
 }
 
 void uploadImageFile() async{
@@ -113,6 +134,34 @@ void uploadImageFile() async{
       update();
     }
 }
+
+// Future<void> showNotification(message)  async {
+//
+//     var user= FirebaseFirestore.instance.collection('users').doc(args[0]).snapshots().listen((docSnapshot) {
+//       if (docSnapshot.exists) {
+//         Map<String, dynamic> data = docSnapshot.data()!;
+//         // You can then retrieve the value from the Map like this:
+//        name = data['name'];
+//        update();
+//       }
+//     });
+//     flutterLocalNotificationsPlugin.show(
+//        0,
+//         name,
+//         message,
+//         const NotificationDetails(
+//             android: AndroidNotificationDetails(
+//                 "0",
+//                 "name",
+//                 importance: Importance.high,
+//                 color: Colors.blue,
+//                 playSound: true,
+//                 icon: '@mipmap/ic_launcher'
+//             )
+//         )
+//     );
+// }
+
 @override
   void dispose() {
 

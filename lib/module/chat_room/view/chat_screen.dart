@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 
@@ -39,7 +40,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: IconButton(
-                        onPressed: controller.getImage,
+                        onPressed: openDialog,
                         icon: const Icon(
                           Icons.camera_alt,
                           size: 20,
@@ -75,7 +76,12 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Welcome to Chat App"),
+        title:GetBuilder(
+          init: ChatMessageController(),
+          builder: (controller) {
+            return  Text(controller.args[1]??"");
+          }
+        ),
       ),
       body: SafeArea(
         child: Container(
@@ -98,87 +104,109 @@ class _ChatScreenState extends State<ChatScreen> {
             ChatMessages chatMessages =
                 ChatMessages.fromDocument(documentSnapshot);
             if (chatMessages.idFrom == FirebaseAuth.instance.currentUser!.uid) {
-              return Column(
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      chatMessages.type == "text"
-                          ? MessageBubble(
-                              chatContent: chatMessages.content,
-                              color: Colors.blue,
-                              textColor: Colors.white, timestamp:chatMessages.timestamp ,
-                            )
-                          : chatMessages.type == "image"
-                              ? Container(
-                        width: MediaQuery.of(context).size.width*0.7,
+                  chatMessages.type == "text"
+                      ? MessageBubble(
+                          chatContent: chatMessages.content,
+                          color: Colors.blue,
+                          textColor: Colors.white, timestamp:chatMessages.timestamp ,
+                        )
+                      : chatMessages.type == "image"
+                          ? Stack(
+                            children: [
+                              Container(
+                    width: MediaQuery.of(context).size.width*0.7,
                                   height: 200,
                                   margin:
                                       const EdgeInsets.only(right: 10, top: 10,bottom: 20),
                                   child: Image.network(chatMessages.content,
                                   fit: BoxFit.fitWidth,
-                                  ))
-                              : const SizedBox.shrink(),
-                      // controller.isMessageSent(index)
-                      //     ? Container(
-                      //         clipBehavior: Clip.hardEdge,
-                      //         decoration: BoxDecoration(
-                      //             borderRadius: BorderRadius.circular(20)),
-                      //         child: const Icon(Icons.person))
-                      //     : Container(
-                      //         width: 35,
-                      //       ),
-                      // controller.isMessageSent(index)
-                      //     ? Icon(Icons.ti)
-                      //     : const SizedBox.shrink()
-                    ],
-                  )
+                                  )),
+                            Positioned(
+                              right: 20,
+                               bottom: 30,
+                               child: Text( DateFormat('hh:mm a').format(
+                                 DateTime.fromMillisecondsSinceEpoch(
+                                   int.parse(chatMessages.timestamp),
+                                 ),),
+                                 style: const TextStyle(
+                                     color:Colors.white,
+                                   fontSize: 10
+                                 ),
+                               ),
+                             ),
+
+                            ],
+                          )
+                          : const SizedBox.shrink(),
+                  // controller.isMessageSent(index)
+                  //     ? Container(
+                  //         clipBehavior: Clip.hardEdge,
+                  //         decoration: BoxDecoration(
+                  //             borderRadius: BorderRadius.circular(20)),
+                  //         child: const Icon(Icons.person))
+                  //     : Container(
+                  //         width: 35,
+                  //       ),
+                  // controller.isMessageSent(index)
+                  //     ? Icon(Icons.ti)
+                  //     : const SizedBox.shrink()
                 ],
               );
             } else {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      // controller.isMessageReceived(index)
-                      //     ? Container(
-                      //         clipBehavior: Clip.hardEdge,
-                      //         decoration: BoxDecoration(
-                      //             borderRadius: BorderRadius.circular(10)),
-                      //         child: const Icon(Icons.person_2_outlined),
-                      //       )
-                      //     : Container(
-                      //         width: 35,
-                      //       ),
-                      chatMessages.type == "text"
-                          ? MessageBubble(
-                              color: Colors.grey,
-                              chatContent: chatMessages.content,
-                              textColor: Colors.black, timestamp: chatMessages.timestamp,
+              return SizedBox(
+                width: 200,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    // controller.isMessageReceived(index)
+                    //     ? Container(
+                    //         clipBehavior: Clip.hardEdge,
+                    //         decoration: BoxDecoration(
+                    //             borderRadius: BorderRadius.circular(10)),
+                    //         child: const Icon(Icons.person_2_outlined),
+                    //       )
+                    //     : Container(
+                    //         width: 35,
+                    //       ),
+                    chatMessages.type == "text"
+                        ? MessageBubble(
+                            color: Colors.grey.shade300,
+                            chatContent: chatMessages.content,
+                            textColor: Colors.black, timestamp: chatMessages.timestamp,
+                          )
+                        : chatMessages.type == "image"
+                            ? Stack(
+                              children: [
+                                Container(
+                        width: MediaQuery.of(context).size.width*0.7,
+                        height: 200,
+                        margin:
+                        const EdgeInsets.only(right: 10, top: 10,bottom: 20),
+                        child: Image.network(chatMessages.content,
+                          fit: BoxFit.fitWidth,
+                        )),
+                                Positioned(
+                                  right: 20,
+                                  bottom: 30,
+                                  child: Text( DateFormat('hh:mm a').format(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                      int.parse(chatMessages.timestamp),
+                                    ),),
+                                    style: const TextStyle(
+                                        color:Colors.white,
+                                        fontSize: 10
+                                    ),
+                                  ),
+                                ),
+                              ],
                             )
-                          : chatMessages.type == "image"
-                              ? Container(
-                          width: MediaQuery.of(context).size.width*0.7,
-                          height: 200,
-                          margin:
-                          const EdgeInsets.only(right: 10, top: 10,bottom: 20),
-                          child: Image.network(chatMessages.content,
-                            fit: BoxFit.fitWidth,
-                          ))
-                              : const SizedBox.shrink(),
-                    ],
-                  ),
-                  // controller.isMessageReceived(index)
-                  //     ? Container(
-                  //         margin: const EdgeInsets.all(10),
-                  //         child: Text(chatMessages.timestamp),
-                  //       )
-                     // : const SizedBox.shrink()
-                ],
+                            : const SizedBox.shrink(),
+                  ],
+                ),
               );
             }
           } else {
@@ -213,18 +241,19 @@ class _ChatScreenState extends State<ChatScreen> {
                 // doc("groupChatId")
                 //     .id.isNotEmpty?
                 StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseServices().getChatMessage(controller.groupChatId!, 10),
+                    stream: FirebaseServices().getChatMessage(controller.groupChatId!, 100),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasData) {
                         controller.listMessages = snapshot.data!.docs;
                         if (controller.listMessages.isNotEmpty) {
                           return ListView.builder(
+                            shrinkWrap: true,
                               padding: const EdgeInsets.all(10),
                               itemCount: snapshot.data?.docs.length,
                               reverse: true,
                               itemBuilder: (context, index) =>
-                                  buildItem(index, snapshot.data?.docs[index]));
+                                buildItem(index, snapshot.data?.docs[index]));
                         } else {
                           return const Center(child: Text("No Messages..."));
                         }
@@ -240,6 +269,62 @@ class _ChatScreenState extends State<ChatScreen> {
                 //     child: Text("Start messages"),
                 //   ));
       },
+    );
+  }
+  openDialog() {
+    Get.dialog(
+      GetBuilder(
+        init: ChatMessageController(),
+        builder: (controller) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Material(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          const Text(
+                            "Select Image From",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 16),
+                          ),
+                          const SizedBox(height: 15),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(onPressed:(){
+                                controller.getImage(ImageSource.camera);
+                                Get.back();
+                              }, child: const Text("Camera")),
+                              const SizedBox(width: 10),
+                            ElevatedButton(onPressed: (){
+          controller.getImage(ImageSource.gallery);
+          Get.back();
+          }, child: const Text("Gallery"))
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+      ),
     );
   }
 }

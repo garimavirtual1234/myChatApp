@@ -15,45 +15,55 @@ final String timestamp;
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      padding: const EdgeInsets.fromLTRB(10,5 , 10, 5),
-       margin: const EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: color,
-      ),
-        child: Row(
-          //crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              chatContent,
-
-              maxLines: 10,
-              //textAlign: TextAlign.left,
-              style: TextStyle(
-                overflow: TextOverflow.visible,
-                color: textColor,
-              fontWeight: FontWeight.bold
-              ),
-            ),
-            const SizedBox(width: 2,),
-            Container(
-              margin: const EdgeInsets.only(top: 15),
-              child:  Text(
-                DateFormat('hh:mm a').format(
-                  DateTime.fromMillisecondsSinceEpoch(
-                    int.parse(timestamp),
-                  ),),
-               // timestamp,
-                textAlign: TextAlign.end,
-                style:  TextStyle(
+      return Container(
+        padding: const EdgeInsets.fromLTRB(10,5 , 10, 5),
+         margin: const EdgeInsets.only(bottom: 10),
+        constraints: const BoxConstraints(
+          minHeight: 20
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: color,
+        ),
+           child: Row(
+             crossAxisAlignment: CrossAxisAlignment.end,
+             children: [
+            Center(
+              child: Container(
+                constraints: const BoxConstraints(
+                  maxWidth: 160,
+                ),
+                child: Text(
+                  chatContent,
+                 // maxLines: 10,
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                  style: TextStyle(
                     color: textColor,
-                  fontSize: 10
+                  fontWeight: FontWeight.bold
+                  ),
                 ),
               ),
             ),
-          ],
-        ),
-    );
+               const SizedBox(width: 5,),
+                Container(
+                // margin: const EdgeInsets.only(top: 15),
+                 alignment: Alignment.bottomRight,
+                 child:  Text(
+                   DateFormat('hh:mm a').format(
+                     DateTime.fromMillisecondsSinceEpoch(
+                       int.parse(timestamp),
+                     ),),
+                  // timestamp,
+                   textAlign: TextAlign.end,
+                   style:  TextStyle(
+                       color: textColor,
+                     fontSize: 10
+                   ),
+                 ),
+               ),
+             ],
+           ),
+      );
   }
 }

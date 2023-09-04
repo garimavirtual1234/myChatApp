@@ -8,6 +8,8 @@ import 'package:chat_bot_demo/module/chat_room/view/chat_screen.dart';
 import 'package:chat_bot_demo/module/dashboard/binding/homepage_binding.dart';
 
 import 'package:chat_bot_demo/module/dashboard/view/home_screen.dart';
+import 'package:chat_bot_demo/module/my_profile/binding/my_profile_binding.dart';
+import 'package:chat_bot_demo/module/my_profile/view/my_profile_screen.dart';
 import 'package:get/get.dart';
 
 class AppRoute{
@@ -28,6 +30,11 @@ class AppRoute{
     GetPage(name: '/chatScreen',
         page: ()=> const ChatScreen(),
       binding: ChatScreenBinding()
+    ),
+    GetPage(
+      name: '/myProfile',
+        page: ()=> const MyProfile(),
+      binding: MyProfileBinding()
     )
 
   ];

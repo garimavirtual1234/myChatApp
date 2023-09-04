@@ -1,7 +1,9 @@
 
+import 'dart:io';
+
 import 'package:chat_bot_demo/module/dashboard/controller/homepage_controller.dart';
-import 'package:chat_bot_demo/services/firebase_services.dart';
-import 'package:chat_bot_demo/module/auth/view/login_screen.dart';
+import 'package:chat_bot_demo/module/my_profile/view/my_profile_screen.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,13 +21,34 @@ class MyHomePage extends StatelessWidget {
         builder: (controller){
           return  Scaffold(
               appBar: AppBar(
-                title:   const Text("Welcome to My ChatApp"),
+                title:   Text("Welcome ${controller.user1?.name??''}"),
                 actions:  [
-                  InkWell(
-                      onTap: (){
-                       controller.loggingOut();
-                      },
-                      child: const Text("logout"))
+                  IconButton(onPressed: (){
+                   controller.loggingOut();
+                  },
+                      icon: const Icon(Icons.logout)
+                  ),
+                  controller.user1?.imageUrl != ''? InkWell(
+                    onTap: (){
+                      Get.to(()=>const MyProfile(),arguments: [controller.user1]);
+                    },
+                    child: Container(
+                     margin: const EdgeInsets.all(6),
+                      height: 45,
+                      width: 45,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image.network(
+                              controller.user1?.imageUrl??"https://commons.wikimedia.org/wiki/File:Sample_User_Icon.png",
+                            fit: BoxFit.fill,
+                          )),
+                    ),
+                  ):
+                  IconButton(onPressed: (){
+                   Get.to(()=>const MyProfile(),arguments: [controller.user1]);
+                  },
+                      icon: const Icon(Icons.person)
+                  ),
                 ],
               ),
               body:FutureBuilder(
@@ -41,9 +64,22 @@ class MyHomePage extends StatelessWidget {
                             child: ListTile(
                               onTap: (){
                                 //print("${snapshot.data!.docs[index]}");
-                                Get.to(()=>const ChatScreen(),arguments: ["${products["id"]}"]);
+                                Get.to(()=>const ChatScreen(),arguments: ["${products["id"]}","${products['name']}"]);
                               },
-                              leading: const CircleAvatar(
+                              leading: products["image"] != ''?
+                              SizedBox(
+                                height: 40,
+                                width: 40,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                    child:
+                                        Image.network(products['image'],
+                                            fit:BoxFit.fill
+                                        ),
+
+                                        ),
+                              ):
+                              const CircleAvatar(
                                 child: Icon(CupertinoIcons.person),
                               ),
                               title: Text(products['name']),

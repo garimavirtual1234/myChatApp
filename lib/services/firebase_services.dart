@@ -33,6 +33,24 @@ class FirebaseServices {
     }
   }
 
+
+  Future updateUserProfile(image,email,name,phone) async{
+    var currentUser = FirebaseAuth.instance.currentUser!.uid;
+    try{
+      var updateUserProfile = await FirebaseFirestore.instance.collection('users').doc(currentUser).set({
+        "id":currentUser,
+        'image':image,
+        'email':email,
+        'name':name,
+        'phone':phone,
+      });
+
+      return updateUserProfile;
+    }catch(e){
+      throw Exception(e);
+    }
+
+  }
   Future createUser(String name, String email, String password) async {
     try {
 
@@ -64,14 +82,14 @@ class FirebaseServices {
 
 
 
- getUserData() async{
+  getUserData() async{
     var uid = FirebaseAuth.instance.currentUser!.uid;
-  var user = FirebaseFirestore.instance.collection('users').where('id',isEqualTo: uid).get();
-  var list = json.decode(jsonEncode(user));
-  var response = list.map((e) => UserModel.fromJson(e)).toList();
-  return response;
+    var user = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    // var list = json.decode(jsonEncode(user));
+    // var response = list.map((e) => UserModel.fromJson(e)).toList();
+     return user;
 
-}
+  }
 
 //upload image to firebase Storage
 UploadTask uploadImageFile(File image,String filename){
