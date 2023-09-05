@@ -1,5 +1,6 @@
 import 'package:chat_bot_demo/module/chat_room/controller/chat_messages_controller.dart';
 import 'package:chat_bot_demo/module/chat_room/model/message_model.dart';
+import 'package:chat_bot_demo/module/dashboard/controller/homepage_controller.dart';
 import 'package:chat_bot_demo/services/firebase_services.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -74,21 +75,28 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title:GetBuilder(
-          init: ChatMessageController(),
-          builder: (controller) {
-            return  Text(controller.args[1]??"");
-          }
+     return WillPopScope(
+      onWillPop: () async {
+        Get.find<HomePageController>().users.removeRange(0, Get.find<HomePageController>().users.length );
+        Get.find<HomePageController>().fetch();
+      return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title:GetBuilder(
+            init: ChatMessageController(),
+            builder: (controller) {
+              return  Text(controller.args[1]??"");
+            }
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            children: [buildListMessage(), _buildChatBox()],
+        body: SafeArea(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              children: [buildListMessage(), _buildChatBox()],
+            ),
           ),
         ),
       ),
@@ -133,8 +141,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                    int.parse(chatMessages.timestamp),
                                  ),),
                                  style: const TextStyle(
-                                     color:Colors.white,
-                                   fontSize: 10
+                                     color:Colors.black,
+                                   fontSize: 10,
+                                   fontWeight: FontWeight.bold
                                  ),
                                ),
                              ),

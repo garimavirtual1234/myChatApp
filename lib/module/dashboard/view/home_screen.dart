@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../chat_room/model/message_model.dart';
 import '../../chat_room/view/chat_screen.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -51,29 +52,35 @@ class MyHomePage extends StatelessWidget {
                   ),
                 ],
               ),
-              body:FutureBuilder(
-                  future: controller.readUsers(),
-                  builder: (context,snapshot) {
-                    if(snapshot.hasData){
-                      return ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
+              body:
+
+            ListView.builder(
+                        itemCount: controller.users.length,
                         itemBuilder: (BuildContext context,int index){
-                          DocumentSnapshot products = snapshot.data!.docs[index];
+                          //DocumentSnapshot products = snapshot.data!.docs[index];
                           return Card(
                             elevation: 5,
                             child: ListTile(
                               onTap: (){
                                 //print("${snapshot.data!.docs[index]}");
-                                Get.to(()=>const ChatScreen(),arguments: ["${products["id"]}","${products['name']}"]);
+                                Get.to(()=>const ChatScreen(),arguments: ["${
+                                 //   products["id"]}","${products['name']
+                                    controller.users[index].id}","${controller.users[index].name}"
+                                ]);
                               },
-                              leading: products["image"] != ''?
+                              leading:
+                            //  products["image"]
+                               controller.users[index].imageUrl   != ''?
                               SizedBox(
                                 height: 40,
                                 width: 40,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(100),
                                     child:
-                                        Image.network(products['image'],
+                                        Image.network(
+                                            controller.users[index].imageUrl??
+                                                "https://commons.wikimedia.org/wiki/File:Sample_User_Icon.png",
+                                          //  products['image'],
                                             fit:BoxFit.fill
                                         ),
 
@@ -82,22 +89,27 @@ class MyHomePage extends StatelessWidget {
                               const CircleAvatar(
                                 child: Icon(CupertinoIcons.person),
                               ),
-                              title: Text(products['name']),
-                             // subtitle: const Text("last message"),
-                             //  trailing: const Text("12:30 P.M",
-                             //    style: TextStyle(
-                             //        color: Colors.black54
-                             //    ),
-                             //  ),
+                              title: Text(
+                                  controller.users[index].name??""
+                                  //products['name']
+                              ),
+                             subtitle:  Text(controller.users[index].userLastMessage??'',
+                             maxLines: 1,
+                               overflow: TextOverflow.ellipsis,
+                             ),
+                              trailing:  Text(controller.users[index].lastMessageTime??'',
+                                style: const TextStyle(
+                                    color: Colors.black54,
+                                  fontSize: 12
+                                ),
+                              ),
+
                             ),
                           );
                         },
-                      );
-                    }else{
-                      return const Center(child: Text("no data present"));
-                    }
-                  }
-              ));
+                      )
+
+          );
         });
   }
 }

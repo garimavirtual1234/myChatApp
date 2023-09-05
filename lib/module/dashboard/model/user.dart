@@ -2,19 +2,23 @@
 
 class UserModel {
   String? id;
-  final String email;
-  final String name;
-  final String? imageUrl;
-  final String? phoneNumber;
-  final String password;
+   String? email;
+   String? name;
+ String? imageUrl;
+   String? phoneNumber;
+   String? password;
+  String? userLastMessage;
+ String? lastMessageTime;
 
   UserModel({
     this.id = '',
-    required this.email,
-    required this.name,
-    required this.password,
+     this.email,
+     this.name,
+     this.password,
     this.imageUrl,
-    this.phoneNumber
+    this.phoneNumber,
+    this.lastMessageTime,
+    this.userLastMessage
   });
 
   Map<String, dynamic> toMap() {
@@ -28,7 +32,8 @@ class UserModel {
      };
       }
 
-  UserModel.fromDocumentSnapshot(doc, this.imageUrl, this.phoneNumber,) :
+  UserModel.fromDocumentSnapshot(doc,
+      this.imageUrl, this.phoneNumber, this.userLastMessage, this.lastMessageTime,) :
       id= doc.id,
       email= doc.data()!["email"],
       name=doc.data()!['name'],
