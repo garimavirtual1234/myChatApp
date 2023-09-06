@@ -1,19 +1,37 @@
-import 'package:flutter/material.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefrencesServices {
+  SharedPreferences? _prefs;
 
-  saveUserDetails(value)  async {
-  final SharedPreferences prefrences = await SharedPreferences.getInstance();
- var userDetails= prefrences.setString("userDetails", value.toString());
- print("user-$userDetails");
+  SharedPrefrencesServices._privateConstructor();
+
+  static final SharedPrefrencesServices instance = SharedPrefrencesServices._privateConstructor();
+
+  Future<void> init() async {
+    _prefs = await SharedPreferences.getInstance();
+  }
+
+  Future<bool?> saveUserDetails(String value)  async {
+    _prefs = await SharedPreferences.getInstance();
+    print("user2-$value");
+ bool? userDetails= await _prefs!.setString("userDetails", value) ;
+ print("user2-$userDetails");
    return userDetails;
   }
 
-  isLoginUser() async{
-    final SharedPreferences preferences= await SharedPreferences.getInstance();
-    var isLogin = preferences.getString('userDetails');
-    print("isLogin-$isLogin");
-    return isLogin;
+String? isLoginUser()  {
+try{
+  String? isLogin =  _prefs!.getString('userDetails');
+  print("isLogin-$isLogin");
+  return isLogin??"";
+}catch(e){
+  throw Exception(e);
+}}
+
+  Future<bool> clearData() async{
+    await _prefs!.clear();
+    return true;
   }
+
 }

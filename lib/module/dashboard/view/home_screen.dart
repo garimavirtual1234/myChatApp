@@ -1,15 +1,14 @@
 
-import 'dart:io';
+
 
 import 'package:chat_bot_demo/module/dashboard/controller/homepage_controller.dart';
 import 'package:chat_bot_demo/module/my_profile/view/my_profile_screen.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../chat_room/model/message_model.dart';
+
 import '../../chat_room/view/chat_screen.dart';
 
 class MyHomePage extends StatelessWidget {

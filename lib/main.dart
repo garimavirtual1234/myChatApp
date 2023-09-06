@@ -17,13 +17,15 @@ import 'module/auth/view/login_screen.dart';
 //   print(message.notification!.title);
 // }
 
-SharedPrefrencesServices prefs = SharedPrefrencesServices();
+SharedPrefrencesServices prefs = SharedPrefrencesServices.instance;
 bool isLogged=false;
 
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
+
    await  Firebase.initializeApp();
+  await SharedPrefrencesServices.instance.init();
 
   //FirebaseMessaging.onBackgroundMessage(backgroundHandler);
 //  final fcmToken = await FirebaseMessaging.instance.getToken();
@@ -61,18 +63,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  autologin() async{
-    var user =  prefs.isLoginUser();
-    if(user != null){
-
-      setState(() {
+  autologin() {
+   String? user = prefs.isLoginUser().toString();
+    print('user-$user');
+    if(user == ''){
         isLogged=true;
-      });
       print("kkk");
     }else{
-    setState(() {
       isLogged=false;
-    });
       print("null");
     }
   }
@@ -80,21 +78,18 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     // TODO: implement initState
-
-
-      autologin();
+  autologin();
  print(isLogged.toString());
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    print(prefs.isLoginUser().toString());
+
     return  GetMaterialApp(
       initialBinding: HomePageBinding(),
       title: 'ChatGPT APP',
       debugShowCheckedModeBanner: false,
-      home: isLogged ?const LoginScreen():
-      const MyHomePage(),
+      home: isLogged ?const LoginScreen(): const MyHomePage(),
       getPages: AppRoute.routes,
     );
   }

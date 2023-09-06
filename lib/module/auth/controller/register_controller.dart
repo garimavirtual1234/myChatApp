@@ -5,19 +5,26 @@ import 'package:chat_bot_demo/services/firebase_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../services/shared_prefrences_services.dart';
+
 class RegisterController extends GetxController{
   final registerFormKey=GlobalKey<FormState>();
   late TextEditingController name;
   late TextEditingController email;
   late TextEditingController password;
   FirebaseServices services = FirebaseServices();
+  SharedPrefrencesServices prefs = SharedPrefrencesServices.instance;
 
   register(){
     services.createUser
       (name.text, email.text, password.text).
     then((value) {
+      prefs.saveUserDetails(value.toString());
       Get.offAll(()=>const MyHomePage());
+
     });
+    prefs.isLoginUser();
+    update();
   }
 
   @override

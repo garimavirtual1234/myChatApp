@@ -18,7 +18,7 @@ FirebaseServices services = FirebaseServices();
 UserModel? user1;
 String? groupChatId;
 List<UserModel> users = [];
-SharedPrefrencesServices prefrencesServices = SharedPrefrencesServices();
+SharedPrefrencesServices prefrencesServices = SharedPrefrencesServices.instance;
 
 
 getCurrentUserData() async {
@@ -38,8 +38,10 @@ getCurrentUserData() async {
 }
 
   loggingOut() async {
+    await prefrencesServices.clearData();
     await services.logOut().then((value) =>
         Get.to(()=>const LoginScreen()));
+
   }
 
 Future<QuerySnapshot<Map<String, dynamic>>> readUsers() =>
@@ -95,9 +97,8 @@ void fetch() async{
 @override
   void onInit() {
     super.onInit();
-    prefrencesServices.isLoginUser();
+    //prefrencesServices.isLoginUser();
      getCurrentUserData();
-
      fetch();
     readUsers();
   }

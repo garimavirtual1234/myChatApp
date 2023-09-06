@@ -2,20 +2,10 @@
 import 'package:chat_bot_demo/module/auth/controller/register_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-
-import '../../../services/firebase_services.dart';
-import '../../dashboard/view/home_screen.dart';
 import 'login_screen.dart';
 
-class RegisterScreen extends StatefulWidget {
+class RegisterScreen extends StatelessWidget {
   const RegisterScreen({Key? key}) : super(key: key);
-
-  @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
-}
-
-class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
