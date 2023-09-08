@@ -48,6 +48,18 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                       ),
                     ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: IconButton(
+                        onPressed: openDialogForVideo,
+                        icon: const Icon(
+                          Icons.video_camera_front_outlined,
+                          size: 20,
+                        ),
+                      ),
+                    ),
                     Flexible(
                         child: TextField(
                       textInputAction: TextInputAction.send,
@@ -77,8 +89,9 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
      return WillPopScope(
       onWillPop: () async {
-        Get.find<HomePageController>().users.removeRange(0, Get.find<HomePageController>().users.length );
-        Get.find<HomePageController>().fetch();
+        // Get.lazyPut<HomePageController>(()=>HomePageController());
+        // Get.find<HomePageController>().users.removeRange(0, Get.find<HomePageController>().users.length );
+        // Get.find<HomePageController>().fetch();
       return true;
       },
       child: Scaffold(
@@ -151,18 +164,6 @@ class _ChatScreenState extends State<ChatScreen> {
                             ],
                           )
                           : const SizedBox.shrink(),
-                  // controller.isMessageSent(index)
-                  //     ? Container(
-                  //         clipBehavior: Clip.hardEdge,
-                  //         decoration: BoxDecoration(
-                  //             borderRadius: BorderRadius.circular(20)),
-                  //         child: const Icon(Icons.person))
-                  //     : Container(
-                  //         width: 35,
-                  //       ),
-                  // controller.isMessageSent(index)
-                  //     ? Icon(Icons.ti)
-                  //     : const SizedBox.shrink()
                 ],
               );
             } else {
@@ -171,16 +172,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    // controller.isMessageReceived(index)
-                    //     ? Container(
-                    //         clipBehavior: Clip.hardEdge,
-                    //         decoration: BoxDecoration(
-                    //             borderRadius: BorderRadius.circular(10)),
-                    //         child: const Icon(Icons.person_2_outlined),
-                    //       )
-                    //     : Container(
-                    //         width: 35,
-                    //       ),
                     chatMessages.type == "text"
                         ? MessageBubble(
                             color: Colors.grey.shade300,
@@ -212,7 +203,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   ),
                                 ),
                               ],
-                            )
+                            ):chatMessages.type == "video"?const Text("video")
                             : const SizedBox.shrink(),
                   ],
                 ),
@@ -333,6 +324,63 @@ class _ChatScreenState extends State<ChatScreen> {
             ],
           );
         }
+      ),
+    );
+  }
+
+  openDialogForVideo() {
+    Get.dialog(
+      GetBuilder(
+          init: ChatMessageController(),
+          builder: (controller) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Material(
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 10),
+                            const Text(
+                              "Select Video From",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 16),
+                            ),
+                            const SizedBox(height: 15),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(onPressed:(){
+                                  controller.getVideo(ImageSource.camera);
+                                  Get.back();
+                                }, child: const Text("Camera")),
+                                const SizedBox(width: 10),
+                                ElevatedButton(onPressed: (){
+                                  controller.getVideo(ImageSource.gallery);
+                                  Get.back();
+                                }, child: const Text("Gallery"))
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
       ),
     );
   }

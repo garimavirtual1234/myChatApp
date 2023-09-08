@@ -1,8 +1,7 @@
-
-
 import 'package:chat_bot_demo/module/dashboard/view/home_screen.dart';
 import 'package:chat_bot_demo/services/firebase_services.dart';
 import 'package:chat_bot_demo/services/shared_prefrences_services.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,6 +23,9 @@ class LoginController extends GetxController{
         print("Invalid");
       }else{
       //  print("loginvalue-$value");
+
+
+
 
 
         prefs.saveUserDetails(value.toString());

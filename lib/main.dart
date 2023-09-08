@@ -4,12 +4,14 @@ import 'package:chat_bot_demo/module/dashboard/view/home_screen.dart';
 import 'package:chat_bot_demo/routes/route_class.dart';
 import 'package:chat_bot_demo/services/shared_prefrences_services.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 
 import 'module/auth/view/login_screen.dart';
 
-// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin= FlutterLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin= FlutterLocalNotificationsPlugin();
 // //Messages are handled by the onBackgroundMessage handler while the app is in the background
 // @pragma('vm:entry-point')
 // Future<void> backgroundHandler(RemoteMessage message) async{
@@ -26,14 +28,10 @@ Future<void> main() async{
 
    await  Firebase.initializeApp();
   await SharedPrefrencesServices.instance.init();
+  // final fcmToken = await FirebaseMessaging.instance.getToken();
+  // print(fcmToken.toString());
+  // FirebaseMessaging.onBackgroundMessage(backgroundHandler);
 
-  //FirebaseMessaging.onBackgroundMessage(backgroundHandler);
-//  final fcmToken = await FirebaseMessaging.instance.getToken();
-//   FirebaseMessaging.instance.onTokenRefresh.listen((event) {
-//     print(fcmToken);
-//   }).onError((error){
-//     print("error to generate fcm token - $error");
-//   });
 
   // NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
   //   alert: true,

@@ -28,7 +28,7 @@ class MyHomePage extends StatelessWidget {
                   },
                       icon: const Icon(Icons.logout)
                   ),
-                  controller.user1?.imageUrl != ''? InkWell(
+                  controller.user1?.imageUrl != null? InkWell(
                     onTap: (){
                       Get.to(()=>const MyProfile(),arguments: [controller.user1]);
                     },
@@ -39,7 +39,7 @@ class MyHomePage extends StatelessWidget {
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(100),
                           child: Image.network(
-                              controller.user1?.imageUrl??"https://commons.wikimedia.org/wiki/File:Sample_User_Icon.png",
+                              controller.user1?.imageUrl??"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png",
                             fit: BoxFit.fill,
                           )),
                     ),
@@ -78,8 +78,9 @@ class MyHomePage extends StatelessWidget {
                                     child:
                                         Image.network(
                                             controller.users[index].imageUrl??
-                                                "https://commons.wikimedia.org/wiki/File:Sample_User_Icon.png",
+                                                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png",
                                           //  products['image'],
+                                            filterQuality: FilterQuality.high,
                                             fit:BoxFit.fill
                                         ),
 
@@ -88,9 +89,12 @@ class MyHomePage extends StatelessWidget {
                               const CircleAvatar(
                                 child: Icon(CupertinoIcons.person),
                               ),
-                              title: Text(
+                              title: controller.users[index].id != controller.user1!.id?Text(
                                   controller.users[index].name??""
                                   //products['name']
+                              ):Text(
+                                  "${controller.users[index].name??""} (You)"
+                                //products['name']
                               ),
                              subtitle:  Text(controller.users[index].userLastMessage??'',
                              maxLines: 1,

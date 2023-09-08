@@ -18,7 +18,7 @@ FirebaseServices services = FirebaseServices();
 UserModel? user1;
 String? groupChatId;
 List<UserModel> users = [];
-SharedPrefrencesServices prefrencesServices = SharedPrefrencesServices.instance;
+SharedPrefrencesServices prefs = SharedPrefrencesServices.instance;
 
 
 getCurrentUserData() async {
@@ -38,7 +38,7 @@ getCurrentUserData() async {
 }
 
   loggingOut() async {
-    await prefrencesServices.clearData();
+    await prefs.clearData();
     await services.logOut().then((value) =>
         Get.to(()=>const LoginScreen()));
 
@@ -53,7 +53,7 @@ void fetch() async{
  var currentUserId= FirebaseAuth.instance.currentUser!.uid;
  print(currentUserId);
   final result= await FirebaseFirestore.
-  instance.collection('users').get();
+  instance.collection('users').orderBy('name').get();
   result.docs.forEach((element) async {
     UserModel user = UserModel();
     String id= element.id;
@@ -99,6 +99,7 @@ void fetch() async{
     super.onInit();
     //prefrencesServices.isLoginUser();
      getCurrentUserData();
+    prefs.getFcmToken();
      fetch();
     readUsers();
   }

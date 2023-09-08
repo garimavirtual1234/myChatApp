@@ -45,7 +45,9 @@ class MyProfileController extends GetxController{
   Future getImage(ImageSource source) async{
     ImagePicker imagePicker = ImagePicker();
 
-    var pickedFile = await imagePicker.pickImage(source:source );
+    var pickedFile = await imagePicker.pickImage(source:source,
+    imageQuality: 100
+    );
     if(pickedFile != null){
       imageFile = File(pickedFile.path);
       String fileName = DateTime.now().millisecondsSinceEpoch.toString();

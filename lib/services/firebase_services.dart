@@ -98,6 +98,11 @@ UploadTask uploadImageFile(File image,String filename){
    return uploadTask;
 }
 
+UploadTask uploadVideoFile(File video,String videoName){
+    Reference reference = FirebaseStorage.instance.ref().child(videoName);
+    UploadTask uploadTask = reference.putFile(video);
+    return uploadTask;
+}
 //To update the Firestore database information regarding user IDs who will be chatting with each other:
 Future<void> updateFirestoreData(
     String collectionPath, String docPath, Map<String,dynamic> dataUpdate){

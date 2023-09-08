@@ -29,6 +29,17 @@ try{
   throw Exception(e);
 }}
 
+  Future<bool?> setFcmToken(String value) async{
+    bool? fcmToken= await _prefs!.setString("fcmToken",value);
+    return fcmToken;
+  }
+
+  String? getFcmToken(){
+    String? getToken=_prefs!.getString("fcmToken");
+    print(getToken);
+    return getToken;
+  }
+
   Future<bool> clearData() async{
     await _prefs!.clear();
     return true;
