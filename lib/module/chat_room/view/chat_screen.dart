@@ -1,7 +1,8 @@
 import 'package:chat_bot_demo/module/chat_room/controller/chat_messages_controller.dart';
 import 'package:chat_bot_demo/module/chat_room/model/message_model.dart';
-import 'package:chat_bot_demo/module/dashboard/controller/homepage_controller.dart';
+
 import 'package:chat_bot_demo/services/firebase_services.dart';
+import 'package:chewie/chewie.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:video_player/video_player.dart';
 
 
 import '../../../widget/message_bubble.dart';
@@ -92,6 +94,7 @@ class _ChatScreenState extends State<ChatScreen> {
         // Get.lazyPut<HomePageController>(()=>HomePageController());
         // Get.find<HomePageController>().users.removeRange(0, Get.find<HomePageController>().users.length );
         // Get.find<HomePageController>().fetch();
+        Get.back();
       return true;
       },
       child: Scaffold(
@@ -135,7 +138,33 @@ class _ChatScreenState extends State<ChatScreen> {
                           color: Colors.blue,
                           textColor: Colors.white, timestamp:chatMessages.timestamp ,
                         )
-                      : chatMessages.type == "image"
+                      : chatMessages.type == "video"?
+                  Container(
+                      margin:  const EdgeInsets.only(right: 10, top: 10,bottom: 20),
+                      height: 300,
+                      width: 300,
+                      child: Chewie(
+                          controller: ChewieController(
+                            videoPlayerController:  VideoPlayerController.networkUrl(
+                              Uri.parse(chatMessages.content),
+                            ),
+                            aspectRatio: 5 / 8,
+                            autoInitialize: true,
+                            autoPlay: false,
+                            looping: true,
+                            errorBuilder: (context, errorMessage) {
+                              return Center(
+                                child: Text(
+                                  errorMessage,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                              );
+                            },
+                          )
+                      )
+
+                  )
+                      :chatMessages.type == "image"
                           ? Stack(
                             children: [
                               Container(
@@ -178,7 +207,31 @@ class _ChatScreenState extends State<ChatScreen> {
                             chatContent: chatMessages.content,
                             textColor: Colors.black, timestamp: chatMessages.timestamp,
                           )
-                        : chatMessages.type == "image"
+                        : chatMessages.type == "video"?  Container(
+                      height: 300,
+                    width: 300,
+                    margin:  const EdgeInsets.only(right: 10, top: 10,bottom: 20),
+                           child: Chewie(
+                               controller: ChewieController(
+                             videoPlayerController:  VideoPlayerController.networkUrl(
+                               Uri.parse(chatMessages.content),
+                             ),
+                             aspectRatio: 5 / 8,
+                             autoInitialize: true,
+                             autoPlay: false,
+                             looping: true,
+                             errorBuilder: (context, errorMessage) {
+                               return Center(
+                                 child: Text(
+                                   errorMessage,
+                                   style: const TextStyle(color: Colors.white),
+                                 ),
+                               );
+                             },
+                           )
+                           )
+
+                        ):chatMessages.type == "image"
                             ? Stack(
                               children: [
                                 Container(
@@ -203,7 +256,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   ),
                                 ),
                               ],
-                            ):chatMessages.type == "video"?const Text("video")
+                            )
                             : const SizedBox.shrink(),
                   ],
                 ),

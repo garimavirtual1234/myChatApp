@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:video_player/video_player.dart';
 
 class ChatMessageController extends GetxController{
   late TextEditingController textController;
@@ -26,13 +27,18 @@ String currentUser = FirebaseAuth.instance.currentUser!.uid;
 String? groupChatId;
 File? videoFile;
   String? name;
+
+  late Future<void> _initializeVideoPlayerFuture;
   ImagePicker imagePicker = ImagePicker();
+
 
   @override
   void onInit() {
 
     super.onInit();
+    
     textController=TextEditingController();
+
 
   }
 
@@ -171,6 +177,7 @@ Future<void> showNotification(message,uid,name)  async {
 
     super.dispose();
     textController.dispose();
+
   }
 
 }

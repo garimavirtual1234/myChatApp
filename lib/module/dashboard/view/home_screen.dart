@@ -28,7 +28,7 @@ class MyHomePage extends StatelessWidget {
                   },
                       icon: const Icon(Icons.logout)
                   ),
-                  controller.user1?.imageUrl != null? InkWell(
+                  controller.user1?.imageUrl != ''? InkWell(
                     onTap: (){
                       Get.to(()=>const MyProfile(),arguments: [controller.user1]);
                     },
@@ -89,7 +89,7 @@ class MyHomePage extends StatelessWidget {
                               const CircleAvatar(
                                 child: Icon(CupertinoIcons.person),
                               ),
-                              title: controller.users[index].id != controller.user1!.id?Text(
+                              title: controller.users[index].id != controller.user1?.id?Text(
                                   controller.users[index].name??""
                                   //products['name']
                               ):Text(
