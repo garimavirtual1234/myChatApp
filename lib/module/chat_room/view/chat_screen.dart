@@ -173,7 +173,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   margin:
                                       const EdgeInsets.only(right: 10, top: 10,bottom: 20),
                                   child: Image.network(chatMessages.content,
-                                  fit: BoxFit.fitWidth,
+                                  fit: BoxFit.contain,
                                   )),
                             Positioned(
                               right: 20,
@@ -240,7 +240,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         margin:
                         const EdgeInsets.only(right: 10, top: 10,bottom: 20),
                         child: Image.network(chatMessages.content,
-                          fit: BoxFit.fitWidth,
+                          fit: BoxFit.contain,
                         )),
                                 Positioned(
                                   right: 20,

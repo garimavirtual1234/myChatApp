@@ -1,7 +1,7 @@
 
 import 'dart:io';
 import 'package:chat_bot_demo/main.dart';
-import 'package:chat_bot_demo/module/dashboard/controller/homepage_controller.dart';
+
 import 'package:chat_bot_demo/services/firebase_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:video_player/video_player.dart';
+
 
 class ChatMessageController extends GetxController{
   late TextEditingController textController;
@@ -28,7 +28,6 @@ String? groupChatId;
 File? videoFile;
   String? name;
 
-  late Future<void> _initializeVideoPlayerFuture;
   ImagePicker imagePicker = ImagePicker();
 
 
@@ -44,8 +43,7 @@ File? videoFile;
 
 
 void onSendMessage(String content,String type){
-    var uid= Get.find<HomePageController>().user1?.id??'0';
-    var name = Get.find<HomePageController>().user1?.name??"user";
+
   if (FirebaseAuth.instance.currentUser!.uid.hashCode <= args[0].hashCode) {
     groupChatId = '${FirebaseAuth.instance.currentUser!.uid}-${args[0]}';
   } else {

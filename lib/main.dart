@@ -4,7 +4,7 @@ import 'package:chat_bot_demo/module/dashboard/view/home_screen.dart';
 import 'package:chat_bot_demo/routes/route_class.dart';
 import 'package:chat_bot_demo/services/shared_prefrences_services.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';

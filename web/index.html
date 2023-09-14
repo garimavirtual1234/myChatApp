@@ -14,7 +14,7 @@
     This is a placeholder for base href that will be replaced by the value of
     the `--base-href` argument provided to `flutter build`.
   -->
-  <base href="$FLUTTER_BASE_HREF">
+  <base href="/">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -40,7 +40,21 @@
   <script src="flutter.js" defer></script>
 </head>
 <body>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
   <script>
+ const firebaseConfig = {
+  apiKey: "AIzaSyBsrKlc8R8QWvDyp59dwih-IPtQr6OFMrs",
+  authDomain: "chatapp-84e0a.firebaseapp.com",
+  projectId: "chatapp-84e0a",
+  storageBucket: "chatapp-84e0a.appspot.com",
+  messagingSenderId: "746494261207",
+  appId: "1:746494261207:web:44797ddd5df88f65c33d92",
+  measurementId: "G-F15D8M9WBF"
+};
+       // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({

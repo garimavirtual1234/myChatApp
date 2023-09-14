@@ -75,8 +75,10 @@ void fetch() async{
         .get();
     if (m.docs.isNotEmpty) {
       //user!.userLastMessage= m.docs.first.data()['content'];
-      if(m.docs.first.data()['type'] !='image'){
+      if(m.docs.first.data()['type'] =='text'){
         user!.userLastMessage= m.docs.first.data()['content'];
+      }else if(m.docs.first.data()['type'] == 'video'){
+        user!.userLastMessage = 'video';
       }else{
         user!.userLastMessage= 'image';
       }
