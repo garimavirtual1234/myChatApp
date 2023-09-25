@@ -152,8 +152,6 @@ Future<void> updateFirestoreData(
   }
 
 
-
-
   Future logOut() async{
     try{
       await FirebaseAuth.instance.signOut();
