@@ -11,7 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'module/auth/view/login_screen.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin= FlutterLocalNotificationsPlugin();
@@ -27,18 +27,19 @@ bool isLogged=false;
 
 
 Future<void> main() async{
+  await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
    if(kIsWeb){
      await Firebase.initializeApp(
-       options: const FirebaseOptions(
-           apiKey: "AIzaSyBsrKlc8R8QWvDyp59dwih-IPtQr6OFMrs",
-           authDomain: "chatapp-84e0a.firebaseapp.com",
-           projectId: "chatapp-84e0a",
-           storageBucket: "chatapp-84e0a.appspot.com",
-           messagingSenderId: "746494261207",
-           appId: "1:746494261207:web:44797ddd5df88f65c33d92",
-           measurementId: "G-F15D8M9WBF"
-       )
+       options: FirebaseOptions(
+         apiKey: dotenv.env['FIREBASE_API_KEY'] ?? '',
+         authDomain: dotenv.env['FIREBASE_AUTH_DOMAIN'] ?? '',
+         projectId: dotenv.env['FIREBASE_PROJECT_ID'] ?? '',
+         storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'] ?? '',
+         messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID'] ?? '',
+         appId: dotenv.env['FIREBASE_APP_ID'] ?? '',
+         measurementId: dotenv.env['FIREBASE_MEASUREMENT_ID'] ?? '',
+       ),
      );
 
    }else{
