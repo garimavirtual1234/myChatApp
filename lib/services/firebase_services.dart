@@ -7,6 +7,7 @@ import 'package:chat_bot_demo/module/chat_room/model/message_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 
 
 import 'package:get/get.dart';
@@ -26,7 +27,9 @@ class FirebaseServices {
         return null;
       }
     } on FirebaseAuthException catch (e){
-      Get.snackbar("Fail", "${e.message}");
+      Get.snackbar("Fail", "Wrong Email or Password",
+      colorText: Colors.white
+      );
     }
     catch (e) {
       throw Exception(e);

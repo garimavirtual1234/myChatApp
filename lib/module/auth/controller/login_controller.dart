@@ -24,10 +24,6 @@ class LoginController extends GetxController{
       }else{
       //  print("loginvalue-$value");
 
-
-
-
-
         prefs.saveUserDetails(value.toString());
 
         Get.offAll(()=>const MyHomePage());
@@ -45,9 +41,9 @@ class LoginController extends GetxController{
   }
 
   @override
-  void dispose() {
+  void onClose() {
 
-    super.dispose();
+    super.onClose();
     email.dispose();
     password.dispose();
   }

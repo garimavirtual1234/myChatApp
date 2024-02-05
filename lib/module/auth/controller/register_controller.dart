@@ -12,6 +12,7 @@ class RegisterController extends GetxController{
   late TextEditingController name;
   late TextEditingController email;
   late TextEditingController password;
+  late TextEditingController confirmPassword;
   FirebaseServices services = FirebaseServices();
   SharedPrefrencesServices prefs = SharedPrefrencesServices.instance;
 
@@ -34,14 +35,15 @@ class RegisterController extends GetxController{
     name= TextEditingController();
     email = TextEditingController();
     password = TextEditingController();
+    confirmPassword = TextEditingController();
   }
 
   @override
-  void dispose() {
-
-    super.dispose();
+  void onClose() {
+    super.onClose();
     name.dispose();
     email.dispose();
     password.dispose();
+    confirmPassword.dispose();
   }
 }

@@ -91,7 +91,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   autologin() {
-   String? user = prefs.isLoginUser().toString();
+   String user = prefs.isLoginUser().toString();
     print('user-$user');
     if(user == ''){
         isLogged=true;
@@ -101,7 +101,8 @@ class _MyAppState extends State<MyApp> {
       print("null");
     }
   }
-  // This widget is the root of your application.
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -114,10 +115,10 @@ class _MyAppState extends State<MyApp> {
 
     return  GetMaterialApp(
       initialBinding: HomePageBinding(),
-      title: 'ChatGPT APP',
+      //title: 'Chat APP',
       debugShowCheckedModeBanner: false,
       home: isLogged ?const LoginScreen(): const MyHomePage(),
-      getPages: AppRoute.routes,
+     // getPages: AppRoute.routes,
     );
   }
 }

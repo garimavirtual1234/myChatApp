@@ -60,21 +60,22 @@ class MyProfileController extends GetxController{
 
   }
 
-  getCurrentUserData() async {
-    var user = await services.getUserData();
-    user1=UserModel(
-        id: user.id,
-        email: user.data()['email']??'',
-        name: user.data()['name']??'',
-        password: user.data()['password']??'',
-        imageUrl: user.data()['image']??'',
-        phoneNumber: user.data()['phone']??''
-    );
-    update();
-    print("name-${user1?.name??'null'}");
-    print(user1?.email??'null');
-    print("imageUrl-${user1?.imageUrl?? "image"}");
-  }
+  // getCurrentUserData() async {
+  //
+  //   var user = await services.getUserData(id);
+  //   user1=UserModel(
+  //       id: user.id,
+  //       email: user.data()['email']??'',
+  //       name: user.data()['name']??'',
+  //       password: user.data()['password']??'',
+  //       imageUrl: user.data()['image']??'',
+  //       phoneNumber: user.data()['phone']??''
+  //   );
+  //   update();
+  //   print("name-${user1?.name??'null'}");
+  //   print(user1?.email??'null');
+  //   print("imageUrl-${user1?.imageUrl?? "image"}");
+  // }
 
   updateProfile() async{
     // String fileName = DateTime.now().millisecondsSinceEpoch.toString();
@@ -82,7 +83,7 @@ class MyProfileController extends GetxController{
 
   await services.updateUserProfile(imageUrl, email.text, name.text, phone.text).then((value) async {
     Get.snackbar("Success", "Update Data Successfully");
-    getCurrentUserData();
+    //getCurrentUserData();
     update();
   });
 

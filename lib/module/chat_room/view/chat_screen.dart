@@ -47,6 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         icon: const Icon(
                           Icons.camera_alt,
                           size: 20,
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -59,14 +60,27 @@ class _ChatScreenState extends State<ChatScreen> {
                         icon: const Icon(
                           Icons.video_camera_front_outlined,
                           size: 20,
+                          color: Colors.white,
                         ),
                       ),
                     ),
                     Flexible(
                         child: TextField(
+                          decoration: const InputDecoration(
+                            focusedBorder:OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.yellow)
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.yellow)
+                            )
+                          ),
+
+                          cursorColor: Colors.yellow,
                       textInputAction: TextInputAction.send,
-                      keyboardType: TextInputType.text,
                       controller: controller.textController,
+                      style:const TextStyle(
+              color:Colors.white
+              ),
                       onSubmitted: (value) {
                         controller.onSendMessage(
                             controller.textController.text, "text");
@@ -77,7 +91,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         controller.onSendMessage(
                             controller.textController.text, "text");
                       },
-                      icon: const Icon(Icons.send_rounded),
+                      icon: const Icon(Icons.send_rounded,
+                      color: Colors.white,
+                      ),
                     )
                   ],
                 ),
@@ -98,11 +114,19 @@ class _ChatScreenState extends State<ChatScreen> {
       return true;
       },
       child: Scaffold(
+        backgroundColor: Colors.black,
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            color: Colors.yellow, onPressed: () { Get.back(); },
+          ),
+          backgroundColor: Colors.black,
           title:GetBuilder(
             init: ChatMessageController(),
             builder: (controller) {
-              return  Text(controller.args[1]??"");
+              return  Text(controller.args[1]??"",style: const TextStyle(
+                color: Colors.yellow
+              ),);
             }
           ),
         ),
@@ -135,8 +159,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   chatMessages.type == "text"
                       ? MessageBubble(
                           chatContent: chatMessages.content,
-                          color: Colors.blue,
-                          textColor: Colors.white, timestamp:chatMessages.timestamp ,
+                          color: Colors.yellow,
+                          textColor: Colors.black, timestamp:chatMessages.timestamp ,
                         )
                       : chatMessages.type == "video"?
                   Container(
@@ -156,7 +180,9 @@ class _ChatScreenState extends State<ChatScreen> {
                               return Center(
                                 child: Text(
                                   errorMessage,
-                                  style: const TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white,
+
+                                  ),
                                 ),
                               );
                             },

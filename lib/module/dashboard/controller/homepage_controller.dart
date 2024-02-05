@@ -25,8 +25,8 @@ getCurrentUserData() async {
  var user = await services.getUserData();
  user1=UserModel(
    id: user.id,
-     email: user.data()['email']??'',
-     name: user.data()['name']??'',
+     email: user.data()['email']??'email',
+     name: user.data()['name']??'user',
      password: user.data()['password']??'',
      imageUrl: user.data()['image']??'',
    phoneNumber: user.data()['phone']??''
@@ -41,7 +41,6 @@ getCurrentUserData() async {
     await prefs.clearData();
     await services.logOut().then((value) =>
         Get.to(()=>const LoginScreen()));
-
   }
 
 Future<QuerySnapshot<Map<String, dynamic>>> readUsers() =>
@@ -53,12 +52,12 @@ void fetch() async{
  var currentUserId= FirebaseAuth.instance.currentUser!.uid;
  print(currentUserId);
   final result= await FirebaseFirestore.
-  instance.collection('users').orderBy('name').get();
+  instance.collection('users').orderBy('name',descending: true).get();
   result.docs.forEach((element) async {
     UserModel user = UserModel();
     String id= element.id;
     user.id = element.id;
-    user.name = element.data()['name']??"";
+    user.name = element.data()['name']??"user";
     user.imageUrl=element.data()['image']??'';
     user.phoneNumber=element.data()['phone']??'';
     user.email= element.data()['email']??'';

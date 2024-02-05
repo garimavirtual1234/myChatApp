@@ -20,13 +20,21 @@ class MyHomePage extends StatelessWidget {
         init: HomePageController(),
         builder: (controller){
           return  Scaffold(
+            backgroundColor: Colors.black,
               appBar: AppBar(
-                title:   Text("Welcome ${controller.user1?.name??''}"),
+                backgroundColor: Colors.black,
+                title:   Text("Welcome ${controller.user1?.name??''}!!",
+                style: const TextStyle(
+                  color: Colors.yellow
+                ),
+                ),
                 actions:  [
                   IconButton(onPressed: (){
                    controller.loggingOut();
                   },
-                      icon: const Icon(Icons.logout)
+                      icon: const Icon(Icons.logout,
+                      color: Colors.yellow,
+                      )
                   ),
                   controller.user1?.imageUrl != ''? InkWell(
                     onTap: (){
@@ -47,7 +55,7 @@ class MyHomePage extends StatelessWidget {
                   IconButton(onPressed: (){
                    Get.to(()=>const MyProfile(),arguments: [controller.user1]);
                   },
-                      icon: const Icon(Icons.person)
+                      icon: const Icon(Icons.person,color: Colors.yellow,)
                   ),
                 ],
               ),
