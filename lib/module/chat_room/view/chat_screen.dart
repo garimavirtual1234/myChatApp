@@ -15,6 +15,7 @@ import 'package:video_player/video_player.dart';
 
 
 import '../../../widget/message_bubble.dart';
+import '../../dashboard/controller/homepage_controller.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({
@@ -109,8 +110,9 @@ class _ChatScreenState extends State<ChatScreen> {
       onWillPop: () async {
         // Get.lazyPut<HomePageController>(()=>HomePageController());
         // Get.find<HomePageController>().users.removeRange(0, Get.find<HomePageController>().users.length );
-        // Get.find<HomePageController>().fetch();
+
         Get.back();
+        Get.find<HomePageController>().fetch();
       return true;
       },
       child: Scaffold(
@@ -118,7 +120,10 @@ class _ChatScreenState extends State<ChatScreen> {
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            color: Colors.yellow, onPressed: () { Get.back(); },
+            color: Colors.yellow, onPressed: () { Get.back();
+          Get.find<HomePageController>().users = [];
+          Get.find<HomePageController>().fetch();
+              },
           ),
           backgroundColor: Colors.black,
           title:GetBuilder(

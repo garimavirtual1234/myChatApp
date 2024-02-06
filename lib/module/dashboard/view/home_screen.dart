@@ -66,7 +66,8 @@ class MyHomePage extends StatelessWidget {
                         itemBuilder: (BuildContext context,int index){
                           //DocumentSnapshot products = snapshot.data!.docs[index];
                           return Card(
-                            elevation: 5,
+                            elevation: 100,
+                            color: const Color.fromRGBO(23, 23, 23, 1),
                             child: ListTile(
                               onTap: (){
                                 //print("${snapshot.data!.docs[index]}");
@@ -95,22 +96,30 @@ class MyHomePage extends StatelessWidget {
                                         ),
                               ):
                               const CircleAvatar(
+                                backgroundColor: Colors.white,
                                 child: Icon(CupertinoIcons.person),
                               ),
                               title: controller.users[index].id != controller.user1?.id?Text(
-                                  controller.users[index].name??""
+                                  controller.users[index].name??"",
+                                  style: const TextStyle(color:Colors.white),
                                   //products['name']
                               ):Text(
-                                  "${controller.users[index].name??""} (You)"
+                                  "${controller.users[index].name??""} (You)",
                                 //products['name']
+                                style: const TextStyle(
+                                  color: Colors.white
+                              ),
                               ),
                              subtitle:  Text(controller.users[index].userLastMessage??'',
+                             style: const TextStyle(
+                               color: Colors.white
+                             ),
                              maxLines: 1,
                                overflow: TextOverflow.ellipsis,
                              ),
                               trailing:  Text(controller.users[index].lastMessageTime??'',
                                 style: const TextStyle(
-                                    color: Colors.black54,
+                                    color: Colors.white,
                                   fontSize: 12
                                 ),
                               ),

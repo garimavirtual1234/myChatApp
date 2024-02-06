@@ -52,7 +52,7 @@ void fetch() async{
  var currentUserId= FirebaseAuth.instance.currentUser!.uid;
  print(currentUserId);
   final result= await FirebaseFirestore.
-  instance.collection('users').orderBy('name',descending: true).get();
+  instance.collection('users').get();
   result.docs.forEach((element) async {
     UserModel user = UserModel();
     String id= element.id;
@@ -85,10 +85,8 @@ void fetch() async{
         DateTime.fromMillisecondsSinceEpoch(
           int.parse(m.docs.first.data()['timestamp']),
         ),).toString();
-      print(user!.lastMessageTime);
+
     }
-   print(user!.lastMessageTime);
-    print(user!.userLastMessage);
     users.add(user);
     update();
   });

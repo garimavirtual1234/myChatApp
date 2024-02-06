@@ -21,15 +21,18 @@ class LoginScreen extends StatelessWidget {
           body: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.all(15),
+              // decoration: const BoxDecoration(
+              //   image: DecorationImage(image: AssetImage("lib/module/auth/view/chat_app_bg_image.jpeg"))
+              // ),
               child: Form(
                 key: controller.formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-
+                     const Image(image: AssetImage("assets/images/images.jpeg")).paddingOnly(top: 140,bottom: 30),
                     Padding(
-                      padding: const EdgeInsets.only(top:200,bottom: 20),
+                      padding: const EdgeInsets.only(top:30,bottom: 20),
                       child: CommonTextfield(
                         textController: controller.email,
                         hintText: 'Enter Your Email',
