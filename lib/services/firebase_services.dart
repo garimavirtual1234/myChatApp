@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:chat_bot_demo/module/chat_room/model/message_model.dart';
+import 'package:chat_bot_demo/module/utils/application_utils.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 
-import '../module/dashboard/model/user.dart';
+
 
 class FirebaseServices {
   Future userAuthentication(String email, String password) async {
@@ -54,34 +55,7 @@ class FirebaseServices {
     }
 
   }
-  Future createUser(String name, String email, String password) async {
-    try {
 
-      var user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email,
-          password: password);
-      var currentUserId = FirebaseAuth.instance.currentUser!.uid ?? '0';
-      print(user);
-      if (user != null) {
-        await FirebaseFirestore.instance.collection('users')
-            .doc(currentUserId)
-            .set(
-            {
-          "id":currentUserId,
-          "name": name, "email": email, "password": password
-        }
-        );
-      }
-      return user;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'email-already-in-use') {
-        Get.snackbar('Fail!','User  Exist');
-      }
-    }
-    catch (e) {
-      throw Exception(e);
-    }
-  }
 
 
 

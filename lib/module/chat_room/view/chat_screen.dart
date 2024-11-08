@@ -67,7 +67,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                     Flexible(
                         child: TextField(
+                          style: Theme.of(context).textTheme.bodyMedium,
                           decoration: const InputDecoration(
+
                             focusedBorder:OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.yellow)
                             ),
@@ -79,9 +81,6 @@ class _ChatScreenState extends State<ChatScreen> {
                           cursorColor: Colors.yellow,
                       textInputAction: TextInputAction.send,
                       controller: controller.textController,
-                      style:const TextStyle(
-              color:Colors.white
-              ),
                       onSubmitted: (value) {
                         controller.onSendMessage(
                             controller.textController.text, "text");

@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../dashboard/model/user.dart';
+import '../../auth/model/user_model.dart';
+
 
 class MyProfileController extends GetxController{
   final formKey = GlobalKey<FormState>();

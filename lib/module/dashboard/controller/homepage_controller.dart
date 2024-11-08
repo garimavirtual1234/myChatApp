@@ -10,16 +10,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../auth/model/user_model.dart';
 import '../../auth/view/login_screen.dart';
-import '../model/user.dart';
+
 
 class HomePageController extends GetxController{
 FirebaseServices services = FirebaseServices();
 UserModel? user1;
 String? groupChatId;
 List<UserModel> users = [];
-SharedPrefrencesServices prefs = SharedPrefrencesServices.instance;
-
+SharedPrefrencesServices prefs = SharedPrefrencesServices();
 
 getCurrentUserData() async {
  var user = await services.getUserData();
@@ -98,7 +98,7 @@ void fetch() async{
     super.onInit();
     //prefrencesServices.isLoginUser();
      getCurrentUserData();
-    prefs.getFcmToken();
+   // prefs.getFcmToken();
      fetch();
     readUsers();
   }

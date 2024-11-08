@@ -1,63 +1,99 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 
-class CommonTextfield extends StatelessWidget {
-  final TextEditingController textController;
-  final String hintText;
-  final String labelText;
-  final FormFieldValidator<String>? validator;
-  final bool? isObscure;
-  final bool? isEnabled;
-  final TextInputType? keyboardType;
-  const CommonTextfield({super.key,
-  required this.textController,
-    required this.hintText,
-     this.isEnabled,
-    this.keyboardType,
-required this.validator, required this.labelText,
-  this.isObscure
+class CommonTextfield extends StatefulWidget {
+  final TextEditingController controller;
+  final bool? readOnly;
+  final int maxLine ;
+  final Widget? prefixIcon;
+  final bool isSecureField;
+  final bool autoCorrect;
+  final String? hint;
+  final TextInputType? inputType;
+  final EdgeInsets? contentPadding;
+  final String? Function(String?)? validation;
+  final double hintTextSize;
+  final VoidCallback? onTap;
+  final bool enable;
+  final TextInputAction? textInputAction;
+  final Function(String)? onChange;
+  final Function(String)? onFieldSubmitted;
+  final List<TextInputFormatter>? inputFormatters;
+
+  const CommonTextfield({
+    super.key,
+    required this.controller,
+    required this.maxLine,
+    this.prefixIcon,
+    this.isSecureField = false,
+    this.autoCorrect = false,
+    this.enable = true,
+    this.inputType,
+    this.hint,
+    this.validation,
+    this.contentPadding,
+    this.textInputAction,
+    this.hintTextSize = 14,
+    this.onTap,
+    this.onChange,
+    this.onFieldSubmitted,
+    this.readOnly,
+    this.inputFormatters,
   });
 
   @override
+  State<CommonTextfield> createState() => _CommonTextfieldState();
+}
+
+class _CommonTextfieldState extends State<CommonTextfield> {
+  bool _passwordVisible = false;
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      keyboardType: keyboardType,
-      obscureText: isObscure??false,
-        enabled: isEnabled,
-        controller: textController,
-        cursorColor: Colors.yellow,
-        style: const TextStyle(
-          color: Colors.white
-        ),
-        decoration:  InputDecoration(
-          labelStyle: const TextStyle(
-            color: Colors.yellow
-          ),
-          labelText: labelText,
-          focusColor: Colors.yellow,
-          enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: Colors.yellow
-              )
-          ),
-          disabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: Colors.yellow
-              )
-          ),
-          focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: Colors.yellow
-              )
-          ),
+      style: Theme.of(context).textTheme.bodyMedium,
+      obscuringCharacter: '*',
+      inputFormatters: widget.inputFormatters,
+      onChanged: widget.onChange,
+      onTap: widget.onTap,
+      readOnly: widget.readOnly != null?true:false,
+      maxLines: widget.maxLine,
+      controller: widget.controller,
+      obscureText: widget.isSecureField && !_passwordVisible,
+      enableSuggestions: !widget.isSecureField,
+      autocorrect: widget.autoCorrect,
+      validator: widget.validation,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      enabled: widget.enable,
+      keyboardType: widget.inputType,
+      textInputAction: widget.textInputAction,
+      onFieldSubmitted: widget.onFieldSubmitted,
+      decoration: InputDecoration(
+        //  isCollapsed: true,
+          isDense: Theme.of(context).inputDecorationTheme.isDense,
+          filled: Theme.of(context).inputDecorationTheme.filled,
+          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+          hintStyle:  Theme.of(context).inputDecorationTheme.hintStyle,
+          hintText: widget.hint,
 
-          hintText: hintText,
-          hintStyle: const TextStyle(
-            color: Colors.white
+          prefixIcon: widget.prefixIcon,
+          suffixIcon: widget.isSecureField
+              ? IconButton(
+            icon: Icon(
+              _passwordVisible ? Icons.visibility : Icons.visibility_off,
+            ),
+            onPressed: () {
+              setState(() {
+                _passwordVisible = !_passwordVisible;
+              });
+            },
           )
-        ),
-        validator: validator
+              : null,
+          focusedBorder: Theme.of(context).inputDecorationTheme.focusedBorder,
+          border: Theme.of(context).inputDecorationTheme.border
+      ) ,
     );
+
   }
 }

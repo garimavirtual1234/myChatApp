@@ -1,3 +1,4 @@
+import 'package:chat_bot_demo/module/utils/app_theme.dart';
 import 'package:flutter/material.dart';
 
 
@@ -15,13 +16,10 @@ required this.onPressed
     onTap: onPressed,
       child: Container(
         height: 40,
-      color: Colors.yellow,
+      color: CustomTheme.lightThemeColor,
       child: Center(
       child: Text(content,
-style: const TextStyle(color: Colors.black,
-fontSize: 18,
-  fontWeight: FontWeight.bold
-),
+style: Theme.of(context).textTheme.bodyMedium
 ),
       ),
       ),

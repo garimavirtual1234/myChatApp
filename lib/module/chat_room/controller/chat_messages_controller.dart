@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -152,21 +152,21 @@ void uploadVideoFile(video) async{
 
 Future<void> showNotification(message,uid,name)  async {
 
-    flutterLocalNotificationsPlugin.show(
-     0,
-        name,
-        message,
-    NotificationDetails(
-            android: AndroidNotificationDetails(
-               uid,
-                name,
-                importance: Importance.high,
-                color: Colors.blue,
-                playSound: true,
-                icon: '@mipmap/ic_launcher'
-            )
-        )
-    );
+    //flutterLocalNotificationsPlugin.show(
+   //  0,
+    //    name,
+      //  message,
+    // NotificationDetails(
+    //         android: AndroidNotificationDetails(
+    //            uid,
+    //             name,
+    //             importance: Importance.high,
+    //             color: Colors.blue,
+    //             playSound: true,
+    //             icon: '@mipmap/ic_launcher'
+    //         )
+    //     )
+  //  );
     update();
 }
 

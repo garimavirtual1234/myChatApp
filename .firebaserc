@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "chatapp-84e0a"
-  }
+    "chatApp": "mychatapp-e72a0"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }

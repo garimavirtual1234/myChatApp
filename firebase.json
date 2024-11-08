@@ -1,9 +1,1 @@
-{
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  },
-  "storage": {
-    "rules": "storage.rules"
-  }
-}
+{"firestore":{"rules":"firestore.rules","indexes":"firestore.indexes.json"},"storage":{"rules":"storage.rules"},"flutter":{"platforms":{"android":{"default":{"projectId":"mychatapp-e72a0","appId":"1:584143822337:android:a2b6529a38d9245b50ea00","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"mychatapp-e72a0","appId":"1:584143822337:ios:317696601a896b8d50ea00","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"mychatapp-e72a0","appId":"1:584143822337:ios:317696601a896b8d50ea00","uploadDebugSymbols":false,"fileOutput":"macos/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"mychatapp-e72a0","configurations":{"android":"1:584143822337:android:a2b6529a38d9245b50ea00","ios":"1:584143822337:ios:317696601a896b8d50ea00","macos":"1:584143822337:ios:317696601a896b8d50ea00","web":"1:584143822337:web:706a9d33662ac1dc50ea00","windows":"1:584143822337:web:faf32f492f99f1af50ea00"}}}}}}
