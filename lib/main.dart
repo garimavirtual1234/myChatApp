@@ -6,7 +6,7 @@ import 'package:chat_bot_demo/module/dashboard/binding/homepage_binding.dart';
 import 'package:chat_bot_demo/routes/route_class.dart';
 import 'package:chat_bot_demo/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:flutter/material.dart';
 //import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -28,10 +28,10 @@ bool isLogged=false;
 
 
 Future<void> main() async{
+  await dotenv.load(fileName: ".env");
+   WidgetsFlutterBinding.ensureInitialized();
 
-  WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
 
 
