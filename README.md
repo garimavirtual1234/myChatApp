@@ -13,6 +13,13 @@ Real-time Messaging: Enabled instant message delivery using Firebase's real-time
 User Authentication: Integrated secure user login and sign-up functionality.
 Data Security: Configured backend to ensure secure message storage and retrieval, protecting user data.
 
+<p align="middle">
+<img src="https://github.com/user-attachments/assets/2645ccc2-72ab-4b0a-89c8-d1ee00c03c92" alt="Alt Text" width="375" height="800">
+   &nbsp;&nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/5bc1e481-1266-4868-a3ee-5e801cb1a1d0" alt="Alt Text" width="375" height="800">
+</p>
+
+
 
 
 
